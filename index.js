@@ -24,8 +24,12 @@ async function main() {
 let chat1 = new Chat({
   from: "Sankeerth",
   to: "Rohith",
-  message: "Send me DBMS notes",
+  msg: "Send me DBMS notes",
   created_at: new Date(), //new Date() creates random date... it is inbuild feature of js
+});
+
+chat1.save().then((res) => {
+  console.log(res);
 });
 
 app.get("/", (req, res) => {
