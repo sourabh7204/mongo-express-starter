@@ -4,20 +4,24 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mini WhatsApp</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <h3>All Chats!</h3>
 
-    <% for (let chat of Chats) { %>
+    <% if (Chats.length === 0) { %>
+    <p>No chats available.</p>
+    <% } else { %> <% for (let chat of Chats) { %>
     <div class="chat">
-      <p>From: <%= chat.from %></p>
+      <p><strong>From:</strong> <%= chat.from %></p>
+
       <div class="msg">
-        <p><%= chat.message %></p>
+        <p><%= chat.msg %></p>
       </div>
-      <p>Received by: <%= chat.to %></p>
+
+      <p><strong>Received by:</strong> <%= chat.to %></p>
       <hr />
     </div>
-    <% } %>
+    <% } %> <% } %>
   </body>
 </html>

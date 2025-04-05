@@ -9,7 +9,8 @@ const exp = require("constants");
 //Connection "views" folder with ejs file
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "Public")));
+// Serve static files from /public
+app.use(express.static(path.join(__dirname, "public")));
 
 //Connecting Mongoose with js file
 main()

@@ -1,0 +1,70 @@
+/* Resetting margin and padding
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base styles */
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f0f2f5;
+  padding: 20px;
+}
+
+/* Header */
+h3 {
+  text-align: center;
+  background-color: #075e54;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+/* Chat container */
+.chat {
+  max-width: 600px;
+  margin: 0 auto 20px auto;
+  background-color: #dcf8c6;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* Text inside chat */
+.chat p {
+  margin: 8px 0;
+}
+
+/* Message bubble */
+.chat .msg {
+  background-color: white;
+  color: #000;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 12px 0;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* From name */
+.chat p:first-child {
+  font-weight: 600;
+  color: #075e54;
+}
+
+/* To name */
+.chat p:last-child {
+  font-size: 0.9em;
+  color: #555;
+}
+
+/* Divider */
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+  margin-top: 15px;
+} */
