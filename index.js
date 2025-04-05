@@ -1,41 +1,53 @@
-//requiring all the nessassary path's
+// Requiring all the necessary packages and paths
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const Chat = require("./models/chat.js");
-const exp = require("constants");
 
-//Connection "views" folder with ejs file
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
+
+// Setting up view engine and static files
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
-// Serve static files from /public
 app.use(express.static(path.join(__dirname, "public")));
 
-//Connecting Mongoose with js file
-main()
-  .then(() => {
-    console.log("Connection Succesful!");
-  })
-  .catch((err) => console.log(err));
-
+// Connecting Mongoose
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/WhatsApp");
+  console.log("Connection Successful!");
 }
+main().catch((err) => console.log(err));
 
-//Index Route
-app.get("/chats", async (req, res) => {
-  let Chats = await Chat.find();
-  console.log(Chats);
-  res.render("index.ejs", { Chats });
-});
+// Routes
 
+// Home route
 app.get("/", (req, res) => {
-  console.log("root Working");
+  console.log("Root route working");
   res.send("Hello from root!");
 });
 
-//Making Connection With Server
+// Show all chats
+app.get("/chats", async (req, res) => {
+  const Chats = await Chat.find();
+  res.render("index.ejs", { Chats });
+});
+
+// Show form to create a new chat
+app.get("/chats/new", (req, res) => {
+  res.render("new.ejs");
+});
+
+// Handle form submission (POST route)
+app.post("/chats/new", async (req, res) => {
+  const { from, to, msg } = req.body;
+  const newChat = new Chat({ from, to, msg });
+  await newChat.save();
+  res.redirect("/chats");
+});
+
+// Start the server
 app.listen(8080, () => {
-  console.log("Server is Listening on Port 8080");
+  console.log("Server is listening on port 8080");
 });
