@@ -23,7 +23,12 @@
         <form method="GET" action="/chats/<%=chat._id%>/edit">
           <button>Edit</button>
         </form>
+        <br />
+        <form method="POST" action="/chats/<%=chat._id%>?_method=DELETE">
+          <button>Delete</button>
+        </form>
       </div>
+
       <p><strong>To:</strong> <%= chat.to %></p>
       <p>
         <strong>Sent at:</strong> <%= new Date(chat.created_at).toLocaleString()

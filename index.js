@@ -64,16 +64,17 @@ app.get("/chats/:id/edit", async (req, res) => {
 //Update Route
 app.put("/chats/:id", async (req, res) => {
   const { id } = req.params;
-  const { msg: newMsg } = req.params;
-  let updatedChat = await Chat.findByIdAndUpdate(
-    id,
-    { msg: newMsg },
-    {
-      runValidators: true,
-      new: true,
-    }
-  );
-  console.log(updatedChat);
+  const { msg } = req.body;
+
+  await Chat.findByIdAndUpdate(id, { msg: msg });
+  res.redirect("/chats");
+});
+
+//Destroy Route
+app.delete("/chats/:id", async (req, res) => {
+  const { id } = req.params;
+  let deletedChat = await Chat.findByIdAndDelete(id);
+  console.log(deletedChat);
   res.redirect("/chats");
 });
 
