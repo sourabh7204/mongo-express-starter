@@ -8,20 +8,27 @@
   </head>
   <body>
     <h3>All Chats!</h3>
+
     <form method="GET" action="/chats/new">
       <button>New Chat</button>
     </form>
+
     <% if (Chats.length === 0) { %>
     <p>No chats available.</p>
     <% } else { %> <% for (let chat of Chats) { %>
     <div class="chat">
       <p><strong>From:</strong> <%= chat.from %></p>
-
       <div class="msg">
         <p><%= chat.msg %></p>
+        <form method="GET" action="/chats/<%=chat._id%>/edit">
+          <button>Edit</button>
+        </form>
       </div>
-
-      <p><strong>Received by:</strong> <%= chat.to %></p>
+      <p><strong>To:</strong> <%= chat.to %></p>
+      <p>
+        <strong>Sent at:</strong> <%= new Date(chat.created_at).toLocaleString()
+        %>
+      </p>
       <hr />
     </div>
     <% } %> <% } %>
