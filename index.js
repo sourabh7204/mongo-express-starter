@@ -1,53 +1,65 @@
-// Requiring all the necessary packages and paths
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const path = require("path");
 const Chat = require("./models/chat.js");
 
-// Middleware to parse form data
+// Middleware
 app.use(express.urlencoded({ extended: true }));
-
-// Setting up view engine and static files
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
 app.use(express.static(path.join(__dirname, "public")));
 
-// Connecting Mongoose
+// View engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+
+// MongoDB connection
 async function main() {
   await mongoose.connect("mongodb://127.0.0.1:27017/WhatsApp");
-  console.log("Connection Successful!");
+  console.log("MongoDB connected");
 }
 main().catch((err) => console.log(err));
 
 // Routes
 
-// Home route
+// Home
 app.get("/", (req, res) => {
-  console.log("Root route working");
-  res.send("Hello from root!");
+  res.send("Welcome to Mini WhatsApp!");
 });
 
 // Show all chats
 app.get("/chats", async (req, res) => {
   const Chats = await Chat.find();
-  res.render("index.ejs", { Chats });
+  res.render("index", { Chats });
 });
 
-// Show form to create a new chat
+// New chat form
 app.get("/chats/new", (req, res) => {
-  res.render("new.ejs");
+  res.render("new");
 });
 
-// Handle form submission (POST route)
+// Create new chat
 app.post("/chats/new", async (req, res) => {
-  const { from, to, msg } = req.body;
-  const newChat = new Chat({ from, to, msg });
-  await newChat.save();
+  const { from, msg, to } = req.body;
+
+  const newChat = new Chat({
+    from,
+    msg,
+    to,
+    created_at: new Date(),
+  });
+
+  await newChat.save(); // Save to MongoDB
   res.redirect("/chats");
 });
 
-// Start the server
+//Chat Edit Route
+app.get("/chats/:id/edit", async (req, res) => {
+  let { id } = req.params;
+  let chat = await Chat.findById(id);
+  res.render("edit.ejs", { chat });
+});
+
+// Start server
 app.listen(8080, () => {
-  console.log("Server is listening on port 8080");
+  console.log(" Server running on http://localhost:8080");
 });
