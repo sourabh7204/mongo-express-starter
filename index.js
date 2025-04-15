@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const path = require("path");
 const Chat = require("./models/chat.js");
 const methodOverride = require("method-override");
+const ExpressError = require("./ExpressError");
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -16,7 +17,7 @@ app.set("view engine", "ejs");
 
 // MongoDB connection
 async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/WhatsApp");
+  await mongoose.connect("mongodb://127.0.0.1:27017/fake-WhatsApp");
   console.log("MongoDB connected");
 }
 main().catch((err) => console.log(err));
@@ -36,6 +37,7 @@ app.get("/chats", async (req, res) => {
 
 // New chat form
 app.get("/chats/new", (req, res) => {
+  throw new ExpressError(404, "Page Not Found!");
   res.render("new");
 });
 
@@ -52,6 +54,16 @@ app.post("/chats/new", async (req, res) => {
 
   await newChat.save(); // Save to MongoDB
   res.redirect("/chats");
+});
+
+// NEW - Show Route
+app.get("/chats/:id", async (req, res, next) => {
+  let { id } = req.params;
+  let chat = await Chat.findById(id);
+  if (!chat) {
+    throw new ExpressError(404, " Chat Not Found!");
+  }
+  res.render("edit.ejs", { chat });
 });
 
 //Chat Edit Route
@@ -76,6 +88,12 @@ app.delete("/chats/:id", async (req, res) => {
   let deletedChat = await Chat.findByIdAndDelete(id);
   console.log(deletedChat);
   res.redirect("/chats");
+});
+
+//Error Handling Middleware
+app.use((err, req, res, next) => {
+  let { status = 500, message = "Some Error Occurred" } = err;
+  res.status(status).send(message);
 });
 
 // Start server
